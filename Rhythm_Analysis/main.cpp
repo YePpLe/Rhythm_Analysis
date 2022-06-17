@@ -1,33 +1,29 @@
-// 2303 ë‚¨íƒœì›… 2022 ë°ì´í„° ë¶„ì„ í”„ë¡œê·¸ë¨  
-// ì£¼ì œ: ì‚¬ìš©ìì˜ ë°•ì ê°ê° ë¶„ì„ í”„ë¡œê·¸ë¨  
-// ì°¸ê³ : https://coding-factory.tistory.com/category/Language/C%20%20%2C%20%20%20C%2B%2B%20%20%2C%20%20C%23
-// í”„ë¡œê·¸ë¨ ì„¤ëª…: 
-// ìµœëŒ€ 200BPM ê¹Œì§€ ê°€ëŠ¥
+// 2303 ³²ÅÂ¿õ 2022 µ¥ÀÌÅÍ ºĞ¼® ÇÁ·Î±×·¥  
+// ÁÖÁ¦: »ç¿ëÀÚÀÇ ¹ÚÀÚ °¨°¢ ºĞ¼® ÇÁ·Î±×·¥  
+// Âü°í: https://coding-factory.tistory.com/category/Language/C%20%20%2C%20%20%20C%2B%2B%20%20%2C%20%20C%23
+// ÇÁ·Î±×·¥ ¼³¸í: 
+// ÇØ°á ¾ÆÀÌµğ¾î : while·Î clockÃ¼Å©, ÇÏÀÚ¸¶ÀÚ playing true ½º·¹µå ½ÇÇà »ç¿îµå Ãâ·Â, 1ms Sleep, playing false
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h> // bool ìë£Œí˜•  
-#include <windows.h> // ìœˆë„ìš° ì½˜ì†”ì°½ êµ¬ì„± 
-//#pragma comment(lib, "winmm.lib")
-#include <process.h> // ë‹¤ì¤‘ ìŠ¤ë ˆë“œ  
-#include <time.h> // ì‹œê°„ ì¸¡ì • ë° ì œì–´ë¥¼ ìœ„í•œ í—¤ë”íŒŒì¼  
-#include <conio.h> // _getch() ì‚¬ìš©  
-#include <mmsystem.h> // ì†Œë¦¬ ì¶œë ¥ 
+#include <stdbool.h> // bool ÀÚ·áÇü  
+#include <windows.h> // À©µµ¿ì ÄÜ¼ÖÃ¢ ±¸¼º 
+#include <process.h> // ´ÙÁß ½º·¹µå  
+#include <time.h> // ½Ã°£ ÃøÁ¤ ¹× Á¦¾î¸¦ À§ÇÑ Çì´õÆÄÀÏ  
+#include <conio.h> // _getch() »ç¿ë  
+#include <mmsystem.h> // ¼Ò¸® Ãâ·Â 
 
-MCI_OPEN_PARMS openMetronomeSound;
-MCI_PLAY_PARMS playMetronomeSound;
-int dwID;
-
-
-void menu(); // ë©”ë‰´ êµ¬ì„± í™”ë©´ 
-void analysis(); // ì´ í”„ë¡œê·¸ë¨ì˜ ì£¼ ê¸°ëŠ¥ì¸ ë°•ì ë¶„ì„ ë° ê¸°ë¡ ì €ì¥ 
-void load(); // ê³¼ê±° ê¸°ë¡ì„ ë¶ˆëŸ¬ì˜¨ í›„ ë¹„êµ 
-void playingMetronomeSound(void* n); // ìŠ¤ë ˆë“œë¡œ ì‚¬ìš´ë“œ ì¬ìƒ 
+void menu(); // ¸Ş´º ±¸¼º È­¸é 
+void analysis(); // ÀÌ ÇÁ·Î±×·¥ÀÇ ÁÖ ±â´ÉÀÎ ¹ÚÀÚ ºĞ¼® ¹× ±â·Ï ÀúÀå 
+void load(); // °ú°Å ±â·ÏÀ» ºÒ·¯¿Â ÈÄ ºñ±³ 
+void playingMetronomeSound(void* n); // ½º·¹µå·Î »ç¿îµå Àç»ı 
 
 bool playing = false;
+int timesample;
 
 int main()
 {
+	printf("%lld", timeGetTime());
 	analysis();
 	system("pause");
 }
@@ -48,7 +44,7 @@ void analysis()
 		}
 	}
 	playing = false;
-	printf("ì‹œì‘ ì‹œê°„: %d\n", start_time);
+	printf("½ÃÀÛ ½Ã°£: %d\n", start_time);
 	for(i = 0; i < 10; i++)
 		printf("%d ", input_time[i]);
 }
@@ -57,7 +53,7 @@ void playingMetronomeSound(void* n)
 {
 	Sleep(1000);
 	while(playing) {
-		printf("%d\n", clock());
+		printf("%lld\n", timeGetTime());
 		PlaySound("Metronome.wav", NULL, SND_ASYNC);
 		Sleep((int)n-10);
 	}
